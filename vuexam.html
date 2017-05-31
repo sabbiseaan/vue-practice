@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>JS Bin</title>
+
+  	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.css">
+  	<link rel="stylesheet" href="style.css">
+	<script src="https://code.jquery.com/jquery-3.1.0.js"></script>
+  	<script src="https://unpkg.com/vue"></script>
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+</head>
+<body>
+<div class="container">
+	<div class="rm_overlay" id="applogin">
+	    <div :class="form_action" v-if="form_action === 'show'">
+	        <div class="rm_modal--header">
+	          <h1>login/Signup</h1>
+	        </div>
+	        <div class="rm_modal--content">
+	            <div class="rm_input-group split">
+	                <div class="rm_input-group">
+	                    <label>Your Name<span>*</span></label>
+	                    <input type="text" placeholder="First Name" v-model="user.first_name"/>
+	                </div>
+	            </div>
+	            <div class="rm_input-group split">
+	                <div class="rm_input-group">
+	                    <label>Email Address<span>*</span></label>
+	                    <input type="text" placeholder="Your Email" v-model="user.email"/>
+	                </div>
+	            </div>
+	            <a rel="nofollow" rel="noreferrer"class="rm_button--next" href="#"  v-on:click="userDashbord('active')">Continue</a>
+	        </div>
+	    </div>
+	    <div :class="page_action"  v-if="page_action === 'active'">
+	        <h2>User Dashbord</h2> 
+	        <p>Login Successfull</p>
+	        {{user.id}}
+	    </div>
+	</div>
+</div>
+
+<script>
+	var applogin = new Vue({
+	  el: "#applogin",
+	  data: {
+	    user: {},
+	    page_action: 'deactive',
+	    form_action: 'show',
+	  },
+	  methods: {
+	    userDashbord: function(item) {
+	      this.page_action = item;
+	      this.form_action ='hide';    
+
+	      axios.post('http://profile.authlab.io/api/v1/login',{ email:'sabbir@gauthlab.io', password: '123456' })
+	        .then(function(response){ 
+	        	this.user = response.data;
+	          console.log(this.user);
+	        }); 
+	    }
+	  }
+	});
+
+</script>
+</body>
+</html>
